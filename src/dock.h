@@ -16,10 +16,13 @@ class Dock : public QObject, public IConfigObserver
     Q_PROPERTY(int iconWidthPercent READ iconWidthPercent NOTIFY dockConfigChanged)
     Q_PROPERTY(int iconHeightPercent READ iconHeightPercent NOTIFY dockConfigChanged)
     Q_PROPERTY(int bottomMarginPercent READ bottomMarginPercent NOTIFY dockConfigChanged)
+    Q_PROPERTY(QStringList desktopFileNames READ desktopFileNames NOTIFY iconPathsChanged)
+
 
 public:
     explicit Dock(QObject *parent = nullptr);
 
+    QStringList desktopFileNames() const;
     QStringList iconPaths() const;
 
     QString bgColor() const;
@@ -30,6 +33,8 @@ public:
     int bottomMarginPercent() const;
 
     void onConfigReloaded() override;
+
+    Q_INVOKABLE void launchApp(const QString &desktopFileName);
 
 signals:
     void iconPathsChanged();

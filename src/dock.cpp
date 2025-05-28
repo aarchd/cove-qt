@@ -1,6 +1,7 @@
 #include "dock.h"
 #include "helper/desktopiconloader.h"
 #include "helper/configmanager.h"
+#include "helper/applauncher.h"
 
 #include <QDebug>
 #include <QJsonObject>
@@ -56,4 +57,13 @@ void Dock::loadDesktopIcons()
 {
     m_iconPaths = DesktopIconLoader::loadDesktopIcons(m_apps);
     emit iconPathsChanged();
+}
+
+void Dock::launchApp(const QString &desktopFileName)
+{
+    AppLauncher::launchApp(desktopFileName);
+}
+
+QStringList Dock::desktopFileNames() const {
+    return m_apps;
 }

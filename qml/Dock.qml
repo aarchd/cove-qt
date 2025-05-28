@@ -24,19 +24,31 @@ Rectangle {
             anchors.verticalCenter: parent.verticalCenter
 
             Repeater {
-                model: dock.iconPaths
+                model: dock.iconPaths.length
 
-                delegate: Image {
-                    source: modelData
-                    fillMode: Image.PreserveAspectFit
-                    asynchronous: true
-                    cache: true
+                delegate: Item {
                     width: parent.height * dock.iconWidthPercent / 100
                     height: parent.height * dock.iconHeightPercent / 100
-                    anchors.verticalCenter: parent.verticalCenter
-                    smooth: true
+
+                    Image {
+                        id: appIcon
+                        source: dock.iconPaths[index]
+                        fillMode: Image.PreserveAspectFit
+                        asynchronous: true
+                        cache: true
+                        anchors.fill: parent
+                        smooth: true
+                    }
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            dock.launchApp(dock.desktopFileNames[index])
+                        }
+                    }
                 }
             }
+
         }
     }
 }
