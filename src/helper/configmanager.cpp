@@ -9,9 +9,10 @@
 ConfigManager::ConfigManager(QObject *parent)
     : QObject(parent)
 {
-    connect(&m_reloadTimer, &QTimer::timeout, this, &ConfigManager::load);
-    m_reloadTimer.setInterval(5000); // 5 seconds for example
-    m_reloadTimer.start();
+    m_configPath = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + "/cove/config.json";
+
+    connect(&m_watcher, &QFileSystemWatcher::fileChanged,
+            this, &ConfigManager::onConfigFileChanged);
 
     load();
 }
@@ -32,14 +33,19 @@ void ConfigManager::reload()
     load();
 }
 
+void ConfigManager::registerObserver(IConfigObserver *observer)
+{
+    if (!m_observers.contains(observer)) {
+        m_observers.append(observer);
+    }
+}
+
 void ConfigManager::load()
 {
-    const QString path = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + "/cove/config.json";
-    QFile file(path);
-
+    QFile file(m_configPath);
     if (!file.open(QIODevice::ReadOnly)) {
-        emit configLoadFailed("Cannot open config file: " + path);
-        qWarning() << "ConfigManager: Failed to open file:" << path;
+        emit configLoadFailed("Cannot open config file: " + m_configPath);
+        qWarning() << "ConfigManager: Failed to open file:" << m_configPath;
         return;
     }
 
@@ -61,4 +67,22 @@ void ConfigManager::load()
 
     m_config = doc.object();
     emit configReloaded();
+    for (IConfigObserver *observer : m_observers) {
+        observer->onConfigReloaded();
+    }
+
+    if (!m_watcher.files().contains(m_configPath)) {
+        m_watcher.addPath(m_configPath);
+    }
 }
+
+void ConfigManager::onConfigFileChanged(const QString &path)
+{
+    qDebug() << "ConfigManager: file changed, reloading..." << path;
+
+    m_watcher.removePath(path);
+    QTimer::singleShot(200, this, [this]() {
+        load();
+    });
+}
+

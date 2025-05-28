@@ -16,11 +16,17 @@
 #include <QJsonObject>
 #include <QJsonArray>
 
-Dock::Dock(QObject *parent)
-    : QObject(parent)
+Dock::Dock(QObject *parent) : QObject(parent)
 {
     loadConfig();
     loadDesktopIcons();
+    ConfigManager::instance().registerObserver(this);
+}
+
+void Dock::onConfigReloaded() {
+    loadConfig();
+    loadDesktopIcons();
+    emit dockConfigChanged();
 }
 
 int Dock::widthPercent() const { return m_widthPercent; }

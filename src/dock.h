@@ -3,8 +3,9 @@
 #include <QObject>
 #include <QStringList>
 #include <QSizeF>
+#include "helper/configmanager.h"
 
-class Dock : public QObject
+class Dock : public QObject, public IConfigObserver
 {
     Q_OBJECT
     Q_PROPERTY(QStringList iconPaths READ iconPaths NOTIFY iconPathsChanged)
@@ -25,6 +26,8 @@ public:
     int iconWidthPercent() const;
     int iconHeightPercent() const;
     int bottomMarginPercent() const;
+
+    void onConfigReloaded() override;
 
 signals:
     void iconPathsChanged();
