@@ -4,7 +4,7 @@ import QtQuick.Controls 2.15
 Rectangle {
     id: dockRoot
     radius: 20
-    color: "#88000000"
+    color: dock.bgColor
 
     width: Screen.width * dock.widthPercent / 100
     height: Screen.height * dock.heightPercent / 100

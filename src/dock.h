@@ -10,6 +10,7 @@ class Dock : public QObject, public IConfigObserver
     Q_OBJECT
     Q_PROPERTY(QStringList iconPaths READ iconPaths NOTIFY iconPathsChanged)
 
+    Q_PROPERTY(QString bgColor READ bgColor NOTIFY dockConfigChanged)
     Q_PROPERTY(int widthPercent READ widthPercent NOTIFY dockConfigChanged)
     Q_PROPERTY(int heightPercent READ heightPercent NOTIFY dockConfigChanged)
     Q_PROPERTY(int iconWidthPercent READ iconWidthPercent NOTIFY dockConfigChanged)
@@ -21,6 +22,7 @@ public:
 
     QStringList iconPaths() const;
 
+    QString bgColor() const;
     int widthPercent() const;
     int heightPercent() const;
     int iconWidthPercent() const;
@@ -39,6 +41,7 @@ private:
 
     QStringList m_iconPaths;
 
+    QString m_bgColor;
     int m_widthPercent;
     int m_heightPercent;
     int m_iconWidthPercent;

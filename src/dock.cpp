@@ -34,6 +34,7 @@ int Dock::heightPercent() const { return m_heightPercent; }
 int Dock::iconWidthPercent() const { return m_iconWidthPercent; }
 int Dock::iconHeightPercent() const { return m_iconHeightPercent; }
 int Dock::bottomMarginPercent() const { return m_bottomMarginPercent; }
+QString Dock::bgColor() const { return m_bgColor; }
 
 QStringList Dock::iconPaths() const
 {
@@ -45,6 +46,7 @@ void Dock::loadConfig()
     const QJsonObject root = ConfigManager::instance().config();
     const QJsonObject dockObj = root.value("dock").toObject();
     const QJsonObject dockConfig = dockObj.value("config").toObject();
+    m_bgColor = dockConfig.value("bg_color").toString("#88000000");
     m_widthPercent = dockConfig.value("width_percent").toInt(30);
     m_heightPercent = dockConfig.value("height_percent").toInt(10);
     m_iconWidthPercent = dockConfig.value("icon_width_percent").toInt(80);
