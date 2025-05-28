@@ -45,5 +45,5 @@ private:
     int m_iconHeightPercent;
     int m_bottomMarginPercent;
 
-    QStringList m_apps; // desktop file names from config
+    QStringList m_apps;
 };

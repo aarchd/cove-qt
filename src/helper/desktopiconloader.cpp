@@ -14,14 +14,11 @@ QStringList DesktopIconLoader::loadDesktopIcons(const QStringList &desktopFileNa
 {
     QStringList iconPaths;
 
-    // Cache directory
     const QString cacheDir = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/cove/icons";
     QDir().mkpath(cacheDir);
 
-    // Cache app dirs once
     const QStringList appDirs = QStandardPaths::standardLocations(QStandardPaths::ApplicationsLocation);
 
-    // Memoize cached icons by desktop filename + size to avoid duplicate work
     QHash<QString, QString> cachedIcons;
 
     for (const QString &desktopFileName : desktopFileNames) {
@@ -30,7 +27,6 @@ QStringList DesktopIconLoader::loadDesktopIcons(const QStringList &desktopFileNa
             continue;
         }
 
-        // Compose cache filename
         const QString cacheFileName = desktopFileName + QString("_%1x%2.png").arg(iconSize.width()).arg(iconSize.height());
         const QString cachedIconPath = QDir(cacheDir).filePath(cacheFileName);
 
@@ -78,7 +74,6 @@ QStringList DesktopIconLoader::loadDesktopIcons(const QStringList &desktopFileNa
 
         if (!found) {
             qWarning() << "Could not find icon for app desktop file:" << desktopFileName;
-            // Optionally add fallback icon path here
         }
     }
 

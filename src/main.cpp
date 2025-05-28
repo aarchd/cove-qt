@@ -20,7 +20,6 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    // Configure LayerShellQt window
     layerShell->setLayer(LayerShellQt::Window::LayerBackground);
     layerShell->setAnchors({
         LayerShellQt::Window::AnchorTop,
@@ -32,7 +31,6 @@ int main(int argc, char *argv[])
     layerShell->setExclusiveZone(-1);
     layerShell->setScope("cove");
 
-    // Create Dock instance and expose to QML as 'dock'
     Dock dock;
     view.rootContext()->setContextProperty("dock", &dock);
 

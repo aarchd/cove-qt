@@ -41,10 +41,8 @@ QString DesktopFile::filePath() const
 
 QIcon DesktopFile::icon() const
 {
-    // Try to load icon from theme or absolute path
     QIcon icon = QIcon::fromTheme(m_iconName);
     if (icon.isNull()) {
-        // fallback if iconName is absolute path
         icon = QIcon(m_iconName);
     }
     return icon;

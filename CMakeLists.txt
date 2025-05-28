@@ -7,7 +7,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_AUTOMOC ON)
 
-# Find required Qt modules
 find_package(Qt6 REQUIRED COMPONENTS
     Core
     Gui
@@ -18,7 +17,6 @@ find_package(Qt6 REQUIRED COMPONENTS
 
 find_package(LayerShellQt REQUIRED)
 
-# Add source files
 add_executable(${PROJECT_NAME}
     src/main.cpp
     src/dock.cpp
@@ -33,7 +31,6 @@ qt_add_resources(${PROJECT_NAME} "qml"
         qml/Dock.qml
 )
 
-# Link Qt libraries
 target_link_libraries(${PROJECT_NAME} PRIVATE
     Qt6::Core
     Qt6::Gui
@@ -43,5 +40,4 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     LayerShellQtInterface
 )
 
-# Set C++ include directories if needed
 target_include_directories(${PROJECT_NAME} PRIVATE src)
