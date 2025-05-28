@@ -1,6 +1,7 @@
 #include "dock.h"
 #include "helper/desktopfile.h"
 #include "helper/desktopiconloader.h"
+#include "helper/configmanager.h"
 
 #include <QStandardPaths>
 #include <QSettings>
@@ -35,38 +36,17 @@ QStringList Dock::iconPaths() const
 
 void Dock::loadConfig()
 {
-    const QString configPath = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + "/cove/dock.json";
-    QFile file(configPath);
-    if (!file.open(QIODevice::ReadOnly)) {
-        qWarning() << "Failed to open config file:" << configPath;
-        return;
-    }
-
-    const QByteArray data = file.readAll();
-    file.close();
-
-    QJsonParseError error;
-    const QJsonDocument doc = QJsonDocument::fromJson(data, &error);
-    if (error.error != QJsonParseError::NoError) {
-        qWarning() << "JSON parse error:" << error.errorString();
-        return;
-    }
-    if (!doc.isObject()) {
-        qWarning() << "Config file root is not an object";
-        return;
-    }
-
-    const QJsonObject root = doc.object();
-
-    const QJsonObject dockObj = root.value("Dock").toObject();
-    m_widthPercent = dockObj.value("width_percent").toInt(30);
-    m_heightPercent = dockObj.value("height_percent").toInt(10);
-    m_iconWidthPercent = dockObj.value("icon_width_percent").toInt(80);
-    m_iconHeightPercent = dockObj.value("icon_height_percent").toInt(80);
-    m_bottomMarginPercent = dockObj.value("bottom_margin_percent").toInt(2);
+    const QJsonObject root = ConfigManager::instance().config();
+    const QJsonObject dockObj = root.value("dock").toObject();
+    const QJsonObject dockConfig = dockObj.value("config").toObject();
+    m_widthPercent = dockConfig.value("width_percent").toInt(30);
+    m_heightPercent = dockConfig.value("height_percent").toInt(10);
+    m_iconWidthPercent = dockConfig.value("icon_width_percent").toInt(80);
+    m_iconHeightPercent = dockConfig.value("icon_height_percent").toInt(80);
+    m_bottomMarginPercent = dockConfig.value("bottom_margin_percent").toInt(2);
 
     m_apps.clear();
-    const QJsonArray appsArray = root.value("Apps").toArray();
+    const QJsonArray appsArray = dockObj.value("apps").toArray();
     for (const QJsonValue &val : appsArray) {
         if (val.isString()) {
             m_apps.append(val.toString());
