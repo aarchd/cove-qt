@@ -1,18 +1,8 @@
 #include "dock.h"
-#include "helper/desktopfile.h"
 #include "helper/desktopiconloader.h"
 #include "helper/configmanager.h"
 
-#include <QStandardPaths>
-#include <QSettings>
-#include <QDir>
-#include <QFileInfo>
-#include <QFile>
 #include <QDebug>
-#include <QUrl>
-#include <QPixmap>
-#include <QRegularExpression>
-#include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
 
@@ -64,7 +54,6 @@ void Dock::loadConfig()
 
 void Dock::loadDesktopIcons()
 {
-    QSize iconSize(64, 64); 
-    m_iconPaths = DesktopIconLoader::loadDesktopIcons(m_apps, iconSize);
+    m_iconPaths = DesktopIconLoader::loadDesktopIcons(m_apps);
     emit iconPathsChanged();
 }
