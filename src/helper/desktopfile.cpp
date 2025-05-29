@@ -22,6 +22,7 @@ void DesktopFile::parse()
     desktopFile.beginGroup("Desktop Entry");
     m_type = desktopFile.value("Type").toString();
     m_iconName = desktopFile.value("Icon").toString();
+    m_name = desktopFile.value("Name").toString();
     desktopFile.endGroup();
 
     m_valid = (m_type == "Application") && !m_iconName.isEmpty();
@@ -45,6 +46,11 @@ QString DesktopFile::iconName() const
 QString DesktopFile::filePath() const
 {
     return m_filePath;
+}
+
+QString DesktopFile::name() const
+{
+    return m_name;
 }
 
 QIcon DesktopFile::icon() const
@@ -124,4 +130,45 @@ QStringList DesktopFile::loadDesktopIcons(const QStringList &desktopFileNames, c
     }
 
     return iconPaths;
+}
+
+QStringList DesktopFile::loadDesktopNames(const QStringList &desktopFileNames)
+{
+    QStringList names;
+
+    const QStringList appDirs = QStandardPaths::standardLocations(QStandardPaths::ApplicationsLocation);
+
+    for (const QString &desktopFileName : desktopFileNames) {
+        if (!desktopFileName.endsWith(".desktop", Qt::CaseInsensitive)) {
+            qWarning() << "Skipping non-.desktop file:" << desktopFileName;
+            continue;
+        }
+
+        bool found = false;
+
+        for (const QString &appDirPath : appDirs) {
+            QDir appDir(appDirPath);
+            QFileInfo desktopFileInfo(appDir.filePath(desktopFileName));
+
+            if (!desktopFileInfo.exists() || !desktopFileInfo.isFile())
+                continue;
+
+            DesktopFile desktopFile(desktopFileInfo.absoluteFilePath());
+            if (!desktopFile.isValid()) {
+                qWarning() << "Invalid desktop file:" << desktopFileInfo.absoluteFilePath();
+                continue;
+            }
+
+            names << desktopFile.name();
+            found = true;
+            break;
+        }
+
+        if (!found) {
+            qWarning() << "Could not find desktop file for:" << desktopFileName;
+            names << QString();
+        }
+    }
+
+    return names;
 }
