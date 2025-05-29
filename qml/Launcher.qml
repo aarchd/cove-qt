@@ -12,8 +12,6 @@ Item {
     property int columns: Math.floor(width / (iconSize + spacing))
     property int rows: Math.floor((height - bottomRow.height - spacing) / (iconSize + spacing))
 
-    property var bottomRowIcons: launcher.allIcons.slice(0, columns)
-
     property var gridIcons: launcher.allIcons.slice(columns)
     property var gridAppNames: launcher.allAppNames.slice(columns)
 
@@ -82,37 +80,45 @@ Item {
 
     Rectangle {
         id: bottomRow
-        width: parent.width
-        height: iconSize + 20
+        width: parent.width * launcher.bottomRowWidthPercent / 100
+        height: iconSize + spacing / 2
         anchors.bottom: parent.bottom
-        color: "#22000000"
-        radius: 12
+        color: launcher.bottomRowColor
+        radius: launcher.bottomRowRadius
+        anchors.horizontalCenter: parent.horizontalCenter
 
-        Row {
-            id: bottomRowIcons
+        Flickable {
             anchors.fill: parent
-            anchors.margins: 10
-            spacing: 10
+            contentWidth: launcher.favAppsIcons.length * (iconSize + spacing)
+            interactive: contentWidth > width
+            clip: true
+            flickDeceleration: 3000
 
-            Repeater {
-                model: bottomRowIcons.length
+            Row {
+                id: favAppsIcons
+                anchors.fill: parent
 
-                delegate: Item {
-                    width: iconSize
-                    height: iconSize
+                Repeater {
+                    model: launcher.favAppsIcons.length
 
-                    Image {
-                        source: bottomRowIcons[index]
-                        anchors.fill: parent
-                        fillMode: Image.PreserveAspectFit
-                        cache: true
-                        smooth: true
-                    }
+                    delegate: Item {
+                        width: iconSize
+                        height: iconSize
+                        anchors.verticalCenter: parent.verticalCenter
 
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: {
-                            launcher.launchApp(bottomRowIcons[index].split("/").pop().split("_")[0])
+                        Image {
+                            source: launcher.favAppsIcons[index]
+                            anchors.fill: parent
+                            fillMode: Image.PreserveAspectFit
+                            cache: true
+                            smooth: true
+                        }
+
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: {
+                                launcher.launchApp(launcher.favAppsIcons[index].split("/").pop().split("_")[0])
+                            }
                         }
                     }
                 }

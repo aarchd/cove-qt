@@ -6,6 +6,7 @@
 #include <QDir>
 #include <QDebug>
 #include <algorithm>
+#include <QJsonArray>
 
 Launcher::Launcher(QObject *parent)
     : QObject(parent)
@@ -30,6 +31,17 @@ void Launcher::loadConfig()
 
     m_spacing = config.value("spacing").toInt(10);
     m_iconSize = config.value("iconSize").toInt(64);
+    m_bottomRowColor = config.value("bottomRowColor").toString("#22000000");
+    m_bottomRowWidthPercent = config.value("bottomRowWidthPercent").toInt(80);
+    m_bottomRowRadius = config.value("bottomRowRadius").toInt(10);
+    
+    m_favApps.clear();
+    const QJsonArray favAppsArray = launcherObj.value("favApps").toArray();
+    for (const QJsonValue &val : favAppsArray) {
+        if (val.isString()) {
+            m_favApps.append(val.toString());
+        }
+    }
 }
 
 QStringList Launcher::filterAndSortDesktopFiles() const
@@ -61,12 +73,19 @@ void Launcher::loadApps()
     m_allValidApps = filterAndSortDesktopFiles();
     m_allIcons = DesktopFile::loadDesktopIcons(m_allValidApps);
     m_allAppNames = DesktopFile::loadDesktopNames(m_allValidApps);
+    m_favAppsIcons = DesktopFile::loadDesktopIcons(m_favApps);
 }
 
 QStringList Launcher::allIcons() const { return m_allIcons; }
 QStringList Launcher::allAppNames() const { return m_allAppNames; }
+QStringList Launcher::favApps() const { return m_favApps; }
+QStringList Launcher::favAppsIcons() const { return m_favAppsIcons; }
+
 int Launcher::spacing() const { return m_spacing; }
 int Launcher::iconSize() const { return m_iconSize; }
+QString Launcher::bottomRowColor() const { return m_bottomRowColor; }
+int Launcher::bottomRowWidthPercent() const { return m_bottomRowWidthPercent; }
+int Launcher::bottomRowRadius() const { return m_bottomRowRadius; }
 
 void Launcher::launchApp(const QString &desktopFileName)
 {
