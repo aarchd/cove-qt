@@ -8,74 +8,79 @@ Item {
 
     property int iconSize: launcher.iconSize
     property int spacing: launcher.spacing
-
     property int columns: Math.floor(width / (iconSize + spacing))
     property int rows: Math.floor((height - bottomRow.height - spacing) / (iconSize + spacing))
-
     property var gridIcons: launcher.allIcons.slice(columns)
     property var gridAppNames: launcher.allAppNames.slice(columns)
-
     property int gridContentWidth: columns * iconSize + (columns - 1) * spacing
 
-    Flickable {
-        id: flickable
+    SwipeView {
+        id: swipeView
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: bottomRow.top
-        clip: true
         interactive: true
-        contentWidth: width
-        contentHeight: gridContent.implicitHeight
-        flickableDirection: Flickable.VerticalFlick
+        currentIndex: launcher.emptyPane === 1 ? 0 : 1
 
-        Grid {
-            id: gridContent
-            width: launcherRoot.gridContentWidth
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.top: parent.top
-            anchors.topMargin: launcherRoot.spacing
-            columns: launcherRoot.columns
-            spacing: launcherRoot.spacing
+        Item {
+            visible: launcher.emptyPane === 1
+        }
 
-            Repeater {
-                model: gridIcons.length
+        Flickable {
+            clip: true
+            interactive: true
+            contentHeight: gridContent.implicitHeight
+            flickableDirection: Flickable.VerticalFlick
 
-                delegate: Item {
-                    width: iconSize
-                    height: iconSize + spacing + (iconSize * 0.25)
+            Grid {
+                id: gridContent
+                width: launcherRoot.gridContentWidth
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.top: parent.top
+                anchors.topMargin: launcherRoot.spacing
+                columns: launcherRoot.columns
+                spacing: launcherRoot.spacing
 
-                    Column {
-                        spacing: spacing * 0.5
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        width: parent.width
+                Repeater {
+                    model: gridIcons.length
 
-                        Image {
-                            source: gridIcons[index]
-                            width: iconSize
-                            height: iconSize
-                            fillMode: Image.PreserveAspectFit
-                            smooth: true
-                            cache: true
-                        }
+                    delegate: Item {
+                        width: iconSize
+                        height: iconSize + spacing + (iconSize * 0.25)
 
-                        Text {
-                            text: gridAppNames[index]
-                            font.pixelSize: iconSize * 0.15
-                            color: "white"
+                        Column {
+                            spacing: spacing * 0.5
+                            anchors.horizontalCenter: parent.horizontalCenter
                             width: parent.width
-                            horizontalAlignment: Text.AlignHCenter
-                            elide: Text.ElideRight
-                            wrapMode: Text.WordWrap
-                        }
-                    }
 
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: {
-                            launcher.launchApp(
-                                gridIcons[index].split("/").pop().split("_")[0]
-                            )
+                            Image {
+                                source: gridIcons[index]
+                                width: iconSize
+                                height: iconSize
+                                fillMode: Image.PreserveAspectFit
+                                smooth: true
+                                cache: true
+                            }
+
+                            Text {
+                                text: gridAppNames[index]
+                                font.pixelSize: iconSize * 0.15
+                                color: "white"
+                                width: parent.width
+                                horizontalAlignment: Text.AlignHCenter
+                                elide: Text.ElideRight
+                                wrapMode: Text.WordWrap
+                            }
+                        }
+
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: {
+                                launcher.launchApp(
+                                    gridIcons[index].split("/").pop().split("_")[0]
+                                )
+                            }
                         }
                     }
                 }
@@ -122,7 +127,9 @@ Item {
                         MouseArea {
                             anchors.fill: parent
                             onClicked: {
-                                launcher.launchApp(launcher.favAppsIcons[index].split("/").pop().split("_")[0])
+                                launcher.launchApp(
+                                    launcher.favAppsIcons[index].split("/").pop().split("_")[0]
+                                )
                             }
                         }
                     }

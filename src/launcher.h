@@ -12,6 +12,7 @@ class Launcher : public QObject, public IConfigObserver
     Q_PROPERTY(QStringList favAppsIcons READ favAppsIcons NOTIFY iconDataChanged)
     Q_PROPERTY(int spacing READ spacing NOTIFY iconDataChanged)
     Q_PROPERTY(int iconSize READ iconSize NOTIFY iconDataChanged)
+    Q_PROPERTY(int emptyPane READ emptyPane NOTIFY iconDataChanged)
     Q_PROPERTY(QString bottomRowColor READ bottomRowColor NOTIFY iconDataChanged)
     Q_PROPERTY(int bottomRowWidthPercent READ bottomRowWidthPercent NOTIFY iconDataChanged)
     Q_PROPERTY(int bottomRowRadius READ bottomRowRadius NOTIFY iconDataChanged)
@@ -26,6 +27,7 @@ public:
 
     int spacing() const;
     int iconSize() const;
+    int emptyPane() const;
     int bottomRowWidthPercent() const;
     int bottomRowRadius() const;
 
@@ -47,6 +49,7 @@ private:
 
     int m_spacing;
     int m_iconSize;
+    int m_emptyPane;
     QString m_bottomRowColor;
     int m_bottomRowWidthPercent;
     int m_bottomRowRadius;
