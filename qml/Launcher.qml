@@ -15,6 +15,8 @@ Item {
     property var gridIcons: launcher.allIcons.slice(columns)
     property var gridAppNames: launcher.allAppNames.slice(columns)
 
+    property int gridContentWidth: columns * iconSize + (columns - 1) * spacing
+
     Flickable {
         id: flickable
         anchors.top: parent.top
@@ -29,7 +31,10 @@ Item {
 
         Grid {
             id: gridContent
-            width: flickable.width
+            width: launcherRoot.gridContentWidth
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: parent.top
+            anchors.topMargin: launcherRoot.spacing
             columns: launcherRoot.columns
             spacing: launcherRoot.spacing
 
@@ -42,7 +47,7 @@ Item {
 
                     Column {
                         spacing: spacing * 0.5
-                        anchors.centerIn: parent
+                        anchors.horizontalCenter: parent.horizontalCenter
                         width: parent.width
 
                         Image {
