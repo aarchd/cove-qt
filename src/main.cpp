@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
     Launcher launcher;
     launcherView.rootContext()->setContextProperty("launcher", &launcher);
 
-    launcherView.setSource(QUrl("qrc:/qml/Main.qml"));
+    launcherView.setSource(QUrl("qrc:/qml/launcher/Main.qml"));
     launcherView.setColor(QColor(Qt::transparent));
 
     launcherView.showFullScreen();

@@ -29,8 +29,8 @@ add_executable(${PROJECT_NAME}
 
 qt_add_resources(${PROJECT_NAME} "qml"
     FILES
-        qml/Main.qml
-        qml/Launcher.qml
+        qml/launcher/Main.qml
+        qml/launcher/Launcher.qml
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
