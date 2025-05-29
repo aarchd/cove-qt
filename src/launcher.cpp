@@ -28,7 +28,6 @@ void Launcher::loadConfig()
     const QJsonObject launcherObj = root.value("launcher").toObject();
     const QJsonObject config = launcherObj.value("config").toObject();
 
-    m_columns = config.value("columns").toInt(4);
     m_spacing = config.value("spacing").toInt(10);
     m_iconSize = config.value("iconSize").toInt(64);
 }
@@ -60,23 +59,12 @@ QStringList Launcher::filterAndSortDesktopFiles() const
 void Launcher::loadApps()
 {
     m_allValidApps = filterAndSortDesktopFiles();
-
-    const int bottomCount = m_columns;
-    m_bottomRowApps = m_allValidApps.mid(0, bottomCount);
-    m_gridApps = m_allValidApps.mid(bottomCount);
-
-    m_bottomRowIcons = DesktopFile::loadDesktopIcons(m_bottomRowApps);
-    m_gridIcons = DesktopFile::loadDesktopIcons(m_gridApps);
+    m_allIcons = DesktopFile::loadDesktopIcons(m_allValidApps);
+    m_allAppNames = DesktopFile::loadDesktopNames(m_allValidApps);
 }
 
-QStringList Launcher::gridAppNames() const
-{
-    return DesktopFile::loadDesktopNames(m_gridApps);
-}
-
-QStringList Launcher::bottomRowIcons() const { return m_bottomRowIcons; }
-QStringList Launcher::gridIcons() const { return m_gridIcons; }
-int Launcher::columns() const { return m_columns; }
+QStringList Launcher::allIcons() const { return m_allIcons; }
+QStringList Launcher::allAppNames() const { return m_allAppNames; }
 int Launcher::spacing() const { return m_spacing; }
 int Launcher::iconSize() const { return m_iconSize; }
 

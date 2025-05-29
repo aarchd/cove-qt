@@ -7,20 +7,16 @@
 class Launcher : public QObject, public IConfigObserver
 {
     Q_OBJECT
-    Q_PROPERTY(QStringList bottomRowIcons READ bottomRowIcons NOTIFY iconDataChanged)
-    Q_PROPERTY(QStringList gridIcons READ gridIcons NOTIFY iconDataChanged)
-    Q_PROPERTY(QStringList gridAppNames READ gridAppNames NOTIFY iconDataChanged)
-    Q_PROPERTY(int columns READ columns NOTIFY iconDataChanged)
+    Q_PROPERTY(QStringList allIcons READ allIcons NOTIFY iconDataChanged)
+    Q_PROPERTY(QStringList allAppNames READ allAppNames NOTIFY iconDataChanged)
     Q_PROPERTY(int spacing READ spacing NOTIFY iconDataChanged)
     Q_PROPERTY(int iconSize READ iconSize NOTIFY iconDataChanged)
 
 public:
     explicit Launcher(QObject *parent = nullptr);
-    QStringList bottomRowIcons() const;
-    QStringList gridIcons() const;
-    QStringList gridAppNames() const;
+    QStringList allIcons() const;
+    QStringList allAppNames() const;
 
-    int columns() const;
     int spacing() const;
     int iconSize() const;
 
@@ -36,12 +32,9 @@ private:
     QStringList filterAndSortDesktopFiles() const;
 
     QStringList m_allValidApps;
-    QStringList m_bottomRowApps;
-    QStringList m_gridApps;
-    QStringList m_bottomRowIcons;
-    QStringList m_gridIcons;
+    QStringList m_allIcons;
+    QStringList m_allAppNames;
 
-    int m_columns;
     int m_spacing;
     int m_iconSize;
 };
