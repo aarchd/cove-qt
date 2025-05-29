@@ -9,6 +9,7 @@ class Launcher : public QObject, public IConfigObserver
     Q_OBJECT
     Q_PROPERTY(QStringList allIcons READ allIcons NOTIFY iconDataChanged)
     Q_PROPERTY(QStringList allAppNames READ allAppNames NOTIFY iconDataChanged)
+    Q_PROPERTY(QStringList favAppsNames READ favAppsNames NOTIFY iconDataChanged)
     Q_PROPERTY(QStringList favAppsIcons READ favAppsIcons NOTIFY iconDataChanged)
     Q_PROPERTY(int spacing READ spacing NOTIFY iconDataChanged)
     Q_PROPERTY(int iconSize READ iconSize NOTIFY iconDataChanged)
@@ -21,7 +22,7 @@ public:
     explicit Launcher(QObject *parent = nullptr);
     QStringList allIcons() const;
     QStringList allAppNames() const;
-    QStringList favApps() const;
+    QStringList favAppsNames() const;
     QStringList favAppsIcons() const;
     QString bottomRowColor() const;
 
@@ -42,9 +43,10 @@ private:
     void loadApps();
 
     QStringList m_allValidApps;
+    QList<QPair<QString, QString>> m_allApps;
     QStringList m_allIcons;
     QStringList m_allAppNames;
-    QStringList m_favApps;
+    QStringList m_favAppsNames;
     QStringList m_favAppsIcons;
 
     int m_spacing;

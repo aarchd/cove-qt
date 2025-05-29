@@ -24,7 +24,6 @@ add_executable(${PROJECT_NAME}
     src/main.cpp
     src/launcher.cpp
     src/helper/configmanager.cpp
-    src/helper/applauncher.cpp
     src/helper/desktopfile.cpp
 )
 

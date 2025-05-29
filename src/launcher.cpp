@@ -1,5 +1,4 @@
 #include "launcher.h"
-#include "helper/applauncher.h"
 #include "helper/desktopfile.h"
 
 #include <QStandardPaths>
@@ -35,11 +34,11 @@ void Launcher::loadConfig()
     m_bottomRowWidthPercent = config.value("bottomRowWidthPercent").toInt(80);
     m_bottomRowRadius = config.value("bottomRowRadius").toInt(10);
     
-    m_favApps.clear();
+    m_favAppsNames.clear();
     const QJsonArray favAppsArray = launcherObj.value("favApps").toArray();
     for (const QJsonValue &val : favAppsArray) {
         if (val.isString()) {
-            m_favApps.append(val.toString());
+            m_favAppsNames.append(val.toString());
         }
     }
 }
@@ -47,14 +46,27 @@ void Launcher::loadConfig()
 void Launcher::loadApps()
 {
     m_allValidApps = DesktopFile::filterDesktopFiles();
-    m_allIcons = DesktopFile::loadDesktopIcons(m_allValidApps);
-    m_allAppNames = DesktopFile::loadDesktopNames(m_allValidApps);
-    m_favAppsIcons = DesktopFile::loadDesktopIcons(m_favApps);
+
+    m_allApps = DesktopFile::loadDesktopEntries(m_allValidApps);
+
+    m_allAppNames.clear();
+    m_allIcons.clear();
+    for (const auto &entry : m_allApps) {
+        m_allAppNames << entry.first;
+        m_allIcons << entry.second;
+    }
+
+    QList<QPair<QString, QString>> favApps = DesktopFile::loadDesktopEntries(m_favAppsNames);
+
+    m_favAppsIcons.clear();
+    for (const auto &entry : favApps) {
+        m_favAppsIcons << entry.second;
+    }
 }
 
 QStringList Launcher::allIcons() const { return m_allIcons; }
 QStringList Launcher::allAppNames() const { return m_allAppNames; }
-QStringList Launcher::favApps() const { return m_favApps; }
+QStringList Launcher::favAppsNames() const { return m_favAppsNames; }
 QStringList Launcher::favAppsIcons() const { return m_favAppsIcons; }
 
 int Launcher::spacing() const { return m_spacing; }
@@ -66,5 +78,5 @@ int Launcher::bottomRowRadius() const { return m_bottomRowRadius; }
 
 void Launcher::launchApp(const QString &desktopFileName)
 {
-    AppLauncher::launchApp(desktopFileName);
+    DesktopFile::launch(desktopFileName);
 }
