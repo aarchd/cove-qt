@@ -56,13 +56,11 @@ void ConfigManager::load()
     if (error.error != QJsonParseError::NoError) {
         emit configLoadFailed("JSON parse error: " + error.errorString());
         qWarning() << "ConfigManager: JSON error:" << error.errorString();
-        return;
     }
 
     if (!doc.isObject()) {
         emit configLoadFailed("Root JSON is not an object.");
         qWarning() << "ConfigManager: Root is not an object.";
-        return;
     }
 
     m_config = doc.object();
