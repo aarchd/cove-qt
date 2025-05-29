@@ -1,7 +1,7 @@
 #include <QGuiApplication>
 #include <QQuickView>
 #include <QQmlContext>
-#include "dock.h"
+#include "launcher.h"
 
 #include <LayerShellQt/Shell>
 #include <LayerShellQt/Window>
@@ -31,8 +31,8 @@ int main(int argc, char *argv[])
     launcherLayer->setExclusiveZone(-1);
     launcherLayer->setScope("cove");
 
-    Dock dock;
-    launcherView.rootContext()->setContextProperty("dock", &dock);
+    Launcher launcher;
+    launcherView.rootContext()->setContextProperty("launcher", &launcher);
 
     launcherView.setSource(QUrl("qrc:/qml/Main.qml"));
     launcherView.setColor(QColor(Qt::transparent));

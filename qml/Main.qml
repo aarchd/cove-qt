@@ -14,9 +14,8 @@ Item {
         cache: true
     }
 
-    Dock {
+    Launcher {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: Screen.height * dock.bottomMarginPercent / 100
     }
 }

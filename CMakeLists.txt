@@ -22,7 +22,7 @@ find_package(LayerShellQt REQUIRED)
 
 add_executable(${PROJECT_NAME}
     src/main.cpp
-    src/dock.cpp
+    src/launcher.cpp
     src/helper/configmanager.cpp
     src/helper/applauncher.cpp
     src/helper/desktopfile.cpp
@@ -32,7 +32,7 @@ add_executable(${PROJECT_NAME}
 qt_add_resources(${PROJECT_NAME} "qml"
     FILES
         qml/Main.qml
-        qml/Dock.qml
+        qml/Launcher.qml
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
