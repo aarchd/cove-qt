@@ -66,8 +66,8 @@ void Launcher::loadApps()
     m_bottomRowApps = m_allValidApps.mid(0, bottomCount);
     m_gridApps = m_allValidApps.mid(bottomCount);
 
-    m_bottomRowIcons = DesktopIconLoader::loadDesktopIcons(m_bottomRowApps);
-    m_gridIcons = DesktopIconLoader::loadDesktopIcons(m_gridApps);
+    m_bottomRowIcons = DesktopFile::loadDesktopIcons(m_bottomRowApps);
+    m_gridIcons = DesktopFile::loadDesktopIcons(m_gridApps);
 }
 
 QStringList Launcher::bottomRowIcons() const { return m_bottomRowIcons; }

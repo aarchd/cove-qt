@@ -2,11 +2,15 @@
 
 #include <QString>
 #include <QIcon>
+#include <QStringList>
+#include <QSize>
 
 class DesktopFile
 {
 public:
     explicit DesktopFile(const QString &filePath);
+
+    static QStringList loadDesktopIcons(const QStringList &desktopFileNames, const QSize &iconSize = QSize(64, 64));
 
     bool isValid() const;
     QString type() const;
