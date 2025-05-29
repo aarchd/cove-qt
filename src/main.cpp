@@ -12,32 +12,32 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
-    QQuickView view;
+    QQuickView launcherView;
+    LayerShellQt::Window *launcherLayer = LayerShellQt::Window::get(&launcherView);
 
-    LayerShellQt::Window *layerShell = LayerShellQt::Window::get(&view);
-    if (!layerShell) {
+    if (!launcherLayer) {
         qWarning() << "Failed to get LayerShellQt window!";
         return -1;
     }
 
-    layerShell->setLayer(LayerShellQt::Window::LayerBackground);
-    layerShell->setAnchors({
+    launcherLayer->setLayer(LayerShellQt::Window::LayerBackground);
+    launcherLayer->setAnchors({
         LayerShellQt::Window::AnchorTop,
         LayerShellQt::Window::AnchorBottom,
         LayerShellQt::Window::AnchorLeft,
         LayerShellQt::Window::AnchorRight
     });
-    layerShell->setKeyboardInteractivity(LayerShellQt::Window::KeyboardInteractivityOnDemand);
-    layerShell->setExclusiveZone(-1);
-    layerShell->setScope("cove");
+    launcherLayer->setKeyboardInteractivity(LayerShellQt::Window::KeyboardInteractivityOnDemand);
+    launcherLayer->setExclusiveZone(-1);
+    launcherLayer->setScope("cove");
 
     Dock dock;
-    view.rootContext()->setContextProperty("dock", &dock);
+    launcherView.rootContext()->setContextProperty("dock", &dock);
 
-    view.setSource(QUrl("qrc:/qml/Main.qml"));
-    view.setColor(QColor(Qt::transparent));
+    launcherView.setSource(QUrl("qrc:/qml/Main.qml"));
+    launcherView.setColor(QColor(Qt::transparent));
 
-    view.showFullScreen();
+    launcherView.showFullScreen();
 
     return app.exec();
 }
