@@ -38,7 +38,6 @@ signals:
 private:
     void loadConfig();
     void loadApps();
-    QStringList filterAndSortDesktopFiles() const;
 
     QStringList m_allValidApps;
     QStringList m_allIcons;

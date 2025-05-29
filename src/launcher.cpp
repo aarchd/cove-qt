@@ -44,33 +44,9 @@ void Launcher::loadConfig()
     }
 }
 
-QStringList Launcher::filterAndSortDesktopFiles() const
-{
-    QStringList validApps;
-    const QStringList appDirs = QStandardPaths::standardLocations(QStandardPaths::ApplicationsLocation);
-
-    for (const QString &dir : appDirs) {
-        QDir d(dir);
-        const QStringList files = d.entryList(QStringList("*.desktop"), QDir::Files);
-        for (const QString &file : files) {
-            const QString fullPath = d.filePath(file);
-            DesktopFile df(fullPath);
-            if (df.isValid())
-                validApps.append(file);
-        }
-    }
-
-    std::sort(validApps.begin(), validApps.end(), [](const QString &a, const QString &b) {
-        DesktopFile dfa(a), dfb(b);
-        return dfa.iconName().toLower() < dfb.iconName().toLower();
-    });
-
-    return validApps;
-}
-
 void Launcher::loadApps()
 {
-    m_allValidApps = filterAndSortDesktopFiles();
+    m_allValidApps = DesktopFile::filterDesktopFiles();
     m_allIcons = DesktopFile::loadDesktopIcons(m_allValidApps);
     m_allAppNames = DesktopFile::loadDesktopNames(m_allValidApps);
     m_favAppsIcons = DesktopFile::loadDesktopIcons(m_favApps);

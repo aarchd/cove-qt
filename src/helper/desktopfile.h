@@ -12,6 +12,7 @@ public:
 
     static QStringList loadDesktopIcons(const QStringList &desktopFileNames, const QSize &iconSize = QSize(64, 64));
     static QStringList loadDesktopNames(const QStringList &desktopFileNames);
+    static QStringList filterDesktopFiles();
 
     bool isValid() const;
     QString type() const;

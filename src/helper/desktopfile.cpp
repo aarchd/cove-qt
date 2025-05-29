@@ -172,3 +172,23 @@ QStringList DesktopFile::loadDesktopNames(const QStringList &desktopFileNames)
 
     return names;
 }
+
+
+QStringList DesktopFile::filterDesktopFiles()
+{
+    QStringList validApps;
+    const QStringList appDirs = QStandardPaths::standardLocations(QStandardPaths::ApplicationsLocation);
+
+    for (const QString &dir : appDirs) {
+        QDir d(dir);
+        const QStringList files = d.entryList(QStringList("*.desktop"), QDir::Files);
+        for (const QString &file : files) {
+            const QString fullPath = d.filePath(file);
+            DesktopFile df(fullPath);
+            if (df.isValid())
+                validApps.append(file);
+        }
+    }
+
+    return validApps;
+}
