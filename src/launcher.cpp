@@ -27,6 +27,8 @@ void Launcher::loadConfig()
     const QJsonObject launcherObj = root.value("launcher").toObject();
     const QJsonObject config = launcherObj.value("config").toObject();
 
+    QString path = config.value("wallpaperPath").toString("/usr/share/cove/wallpaper.png");
+    m_wallpaperPath = QUrl::fromLocalFile(path).toString();
     m_spacing = config.value("spacing").toInt(10);
     m_iconSize = config.value("iconSize").toInt(64);
     m_emptyPane = config.value("emptyPane").toInt(1);
@@ -69,6 +71,7 @@ QStringList Launcher::allAppNames() const { return m_allAppNames; }
 QStringList Launcher::favAppsNames() const { return m_favAppsNames; }
 QStringList Launcher::favAppsIcons() const { return m_favAppsIcons; }
 
+QString Launcher::wallpaperPath() const { return m_wallpaperPath; }
 int Launcher::spacing() const { return m_spacing; }
 int Launcher::iconSize() const { return m_iconSize; }
 int Launcher::emptyPane() const { return m_emptyPane; }

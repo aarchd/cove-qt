@@ -14,6 +14,15 @@ Item {
     property var gridAppNames: launcher.allAppNames.slice(columns)
     property int gridContentWidth: columns * iconSize + (columns - 1) * spacing
 
+    Image {
+        id: bgImage
+        anchors.fill: parent
+        source: launcher.wallpaperPath
+        fillMode: Image.PreserveAspectCrop
+        smooth: true
+        cache: true
+    }
+
     SwipeView {
         id: swipeView
         anchors.top: parent.top
