@@ -1,5 +1,4 @@
 #include "launcher.h"
-#include "helper/desktopiconloader.h"
 #include "helper/applauncher.h"
 #include "helper/desktopfile.h"
 
@@ -68,6 +67,11 @@ void Launcher::loadApps()
 
     m_bottomRowIcons = DesktopFile::loadDesktopIcons(m_bottomRowApps);
     m_gridIcons = DesktopFile::loadDesktopIcons(m_gridApps);
+}
+
+QStringList Launcher::gridAppNames() const
+{
+    return DesktopFile::loadDesktopNames(m_gridApps);
 }
 
 QStringList Launcher::bottomRowIcons() const { return m_bottomRowIcons; }

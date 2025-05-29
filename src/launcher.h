@@ -9,6 +9,7 @@ class Launcher : public QObject, public IConfigObserver
     Q_OBJECT
     Q_PROPERTY(QStringList bottomRowIcons READ bottomRowIcons NOTIFY iconDataChanged)
     Q_PROPERTY(QStringList gridIcons READ gridIcons NOTIFY iconDataChanged)
+    Q_PROPERTY(QStringList gridAppNames READ gridAppNames NOTIFY iconDataChanged)
     Q_PROPERTY(int columns READ columns NOTIFY iconDataChanged)
     Q_PROPERTY(int spacing READ spacing NOTIFY iconDataChanged)
     Q_PROPERTY(int iconSize READ iconSize NOTIFY iconDataChanged)
@@ -17,6 +18,7 @@ public:
     explicit Launcher(QObject *parent = nullptr);
     QStringList bottomRowIcons() const;
     QStringList gridIcons() const;
+    QStringList gridAppNames() const;
 
     int columns() const;
     int spacing() const;

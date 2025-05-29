@@ -45,6 +45,16 @@ Item {
                         cache: true
                     }
 
+                    Text {
+                        text: launcher.gridAppNames[index]
+                        font.pixelSize: 12
+                        color: "white"
+                        horizontalAlignment: Text.AlignHCenter
+                        elide: Text.ElideRight
+                        width: iconSize
+                    }
+
+
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {

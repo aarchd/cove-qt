@@ -26,7 +26,6 @@ add_executable(${PROJECT_NAME}
     src/helper/configmanager.cpp
     src/helper/applauncher.cpp
     src/helper/desktopfile.cpp
-    src/helper/desktopiconloader.cpp
 )
 
 qt_add_resources(${PROJECT_NAME} "qml"
