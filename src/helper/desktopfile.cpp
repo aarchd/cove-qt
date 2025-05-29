@@ -170,6 +170,5 @@ QStringList DesktopFile::loadDesktopNames(const QStringList &desktopFileNames)
         }
     }
 
-    names.sort(Qt::CaseInsensitive);
     return names;
 }
