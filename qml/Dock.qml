@@ -29,6 +29,7 @@ Rectangle {
                 delegate: Item {
                     width: parent.height * dock.iconWidthPercent / 100
                     height: parent.height * dock.iconHeightPercent / 100
+                    anchors.verticalCenter: parent.verticalCenter
 
                     Image {
                         id: appIcon
