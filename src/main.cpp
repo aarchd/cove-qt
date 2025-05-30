@@ -1,5 +1,8 @@
 #include <QGuiApplication>
-#include <QQuickView>
+#include <QQmlEngine>
+#include <QQmlComponent>
+#include <QQuickWindow>
+#include <QQuickItem>
 #include <QQmlContext>
 #include "launcher.h"
 #include "statusbar.h"
@@ -10,17 +13,13 @@
 int main(int argc, char *argv[])
 {
     LayerShellQt::Shell::useLayerShell();
-
     QGuiApplication app(argc, argv);
 
-    // Launcher
-    QQuickView launcherView;
-    LayerShellQt::Window *launcherLayer = LayerShellQt::Window::get(&launcherView);
+    QQmlEngine engine;
 
-    if (!launcherLayer) {
-        qWarning() << "Failed to get LayerShellQt window!";
-        return -1;
-    }
+    //Launcher
+    QQuickWindow launcherWindow;
+    LayerShellQt::Window *launcherLayer = LayerShellQt::Window::get(&launcherWindow);
 
     launcherLayer->setLayer(LayerShellQt::Window::LayerBackground);
     launcherLayer->setAnchors({
@@ -34,21 +33,20 @@ int main(int argc, char *argv[])
     launcherLayer->setScope("cove-launcher");
 
     Launcher launcher;
-    launcherView.rootContext()->setContextProperty("launcher", &launcher);
+    QQmlContext *launcherContext = new QQmlContext(engine.rootContext());
+    launcherContext->setContextProperty("launcher", &launcher);
 
-    launcherView.setSource(QUrl("qrc:/qml/launcher/Main.qml"));
-    launcherView.setColor(QColor(Qt::transparent));
+    QQmlComponent launcherComponent(&engine, QUrl("qrc:/qml/launcher/Main.qml"));
+    QObject *launcherRoot = launcherComponent.create(launcherContext);
+    QQuickItem *launcherItem = qobject_cast<QQuickItem *>(launcherRoot);
+    launcherItem->setParentItem(launcherWindow.contentItem());
 
-    launcherView.showFullScreen();
+    launcherWindow.setColor(Qt::transparent);
+    launcherWindow.showFullScreen();
 
-    // StatusBar
-    QQuickView statusBarView;
-    LayerShellQt::Window *statusBarLayer = LayerShellQt::Window::get(&statusBarView);
-
-    if (!statusBarLayer) {
-        qWarning() << "Failed to get LayerShellQt window!";
-        return -1;
-    }
+    //StatusBar
+    QQuickWindow statusBarWindow;
+    LayerShellQt::Window *statusBarLayer = LayerShellQt::Window::get(&statusBarWindow);
 
     statusBarLayer->setLayer(LayerShellQt::Window::LayerOverlay);
     statusBarLayer->setAnchors({
@@ -60,13 +58,19 @@ int main(int argc, char *argv[])
     statusBarLayer->setScope("cove-statusbar");
 
     StatusBar statusBar;
-    statusBarLayer->setExclusiveZone(statusBarView.screen()->size().height() * statusBar.heightPercent() / 100);
-    statusBarView.rootContext()->setContextProperty("statusBar", &statusBar);
+    QQmlContext *statusContext = new QQmlContext(engine.rootContext());
+    statusContext->setContextProperty("statusBar", &statusBar);
+    statusBarWindow.setWidth(statusBarWindow.screen()->size().width());
+    statusBarWindow.setHeight(statusBarWindow.screen()->size().height() * statusBar.heightPercent() / 100);
 
-    statusBarView.setSource(QUrl("qrc:/qml/statusbar/Main.qml"));
-    statusBarView.setColor(QColor(Qt::transparent));
+    QQmlComponent statusComponent(&engine, QUrl("qrc:/qml/statusbar/Main.qml"));
+    QObject *statusRoot = statusComponent.create(statusContext);
+    QQuickItem *statusItem = qobject_cast<QQuickItem *>(statusRoot);
+    statusItem->setParentItem(statusBarWindow.contentItem());
 
-    statusBarView.show();
+    statusBarLayer->setExclusiveZone(statusBarWindow.screen()->size().height() * statusBar.heightPercent() / 100);
+    statusBarWindow.setColor(Qt::transparent);
+    statusBarWindow.show();
 
     return app.exec();
 }
