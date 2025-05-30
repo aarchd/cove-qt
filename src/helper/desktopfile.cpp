@@ -173,10 +173,10 @@ bool DesktopFile::launch(const QString &desktopFileName)
     pid_t pid = fork();
     if (pid == 0) {
         setsid();
+        unsetenv("QT_WAYLAND_SHELL_INTEGRATION");
         execvp(cmd.data(), argv.data());
         _exit(127);
     } else if (pid > 0) {
-        qDebug() << "Launched process PID:" << pid << "from desktop file:" << fullPath;
         return true;
     } else {
         qWarning() << "fork() failed";
