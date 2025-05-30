@@ -19,10 +19,13 @@ find_package(Qt6 REQUIRED COMPONENTS
 )
 
 find_package(LayerShellQt REQUIRED)
+pkg_check_modules(UPower REQUIRED IMPORTED_TARGET upower-glib)
+pkg_check_modules(GLIB REQUIRED IMPORTED_TARGET glib-2.0)
 
 add_executable(${PROJECT_NAME}
     src/main.cpp
     src/launcher.cpp
+    src/statusbar.cpp
     src/helper/configmanager.cpp
     src/helper/desktopfile.cpp
     src/helper/battery.cpp
@@ -32,6 +35,8 @@ qt_add_resources(${PROJECT_NAME} "qml"
     FILES
         qml/launcher/Main.qml
         qml/launcher/Launcher.qml
+        qml/statusbar/Main.qml
+        qml/statusbar/StatusBar.qml
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
@@ -41,6 +46,8 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     Qt6::Quick
     Qt6::WaylandClient
     LayerShellQtInterface
+    PkgConfig::UPower
+    PkgConfig::GLIB
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE src)
