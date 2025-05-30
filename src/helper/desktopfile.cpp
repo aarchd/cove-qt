@@ -32,26 +32,10 @@ void DesktopFile::parse()
     m_valid = (m_type == "Application") && !m_iconName.isEmpty();
 }
 
-bool DesktopFile::isValid() const
-{
-    return m_valid;
-}
-
-QString DesktopFile::name() const
-{
-    return m_name;
-}
-
-QString DesktopFile::execLine() const
-{
-    return m_execLine;
-}
-
-QIcon DesktopFile::icon() const
-{
-    QIcon icon = QIcon::fromTheme(m_iconName);
-    return icon;
-}
+bool DesktopFile::isValid() const { return m_valid; }
+QString DesktopFile::name() const { return m_name; }
+QString DesktopFile::execLine() const { return m_execLine; }
+QIcon DesktopFile::icon() const { return QIcon::fromTheme(m_iconName); }
 
 QList<QPair<QString, QString>> DesktopFile::loadDesktopEntries(const QStringList &desktopFileNames, const QSize &iconSize)
 {
