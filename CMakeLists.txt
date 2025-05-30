@@ -25,6 +25,7 @@ add_executable(${PROJECT_NAME}
     src/launcher.cpp
     src/helper/configmanager.cpp
     src/helper/desktopfile.cpp
+    src/helper/battery.cpp
 )
 
 qt_add_resources(${PROJECT_NAME} "qml"
