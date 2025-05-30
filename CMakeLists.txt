@@ -31,6 +31,8 @@ add_executable(${PROJECT_NAME}
     src/helper/battery.cpp
 )
 
+target_compile_definitions(${PROJECT_NAME} PRIVATE QT_NO_KEYWORDS)
+
 qt_add_resources(${PROJECT_NAME} "qml"
     FILES
         qml/launcher/Main.qml

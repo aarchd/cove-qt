@@ -18,7 +18,7 @@ void Launcher::onConfigReloaded()
 {
     loadConfig();
     loadApps();
-    emit iconDataChanged();
+    Q_EMIT iconDataChanged();
 }
 
 void Launcher::loadConfig()

@@ -37,7 +37,7 @@ public:
     Q_INVOKABLE void launchApp(const QString &desktopFileName);
     void onConfigReloaded() override;
 
-signals:
+Q_SIGNALS:
     void iconDataChanged();
 
 private:

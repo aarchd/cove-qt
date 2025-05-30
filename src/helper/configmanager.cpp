@@ -44,7 +44,7 @@ void ConfigManager::load()
 {
     QFile file(m_configPath);
     if (!file.open(QIODevice::ReadOnly)) {
-        emit configLoadFailed("Cannot open config file: " + m_configPath);
+        Q_EMIT configLoadFailed("Cannot open config file: " + m_configPath);
         qWarning() << "ConfigManager: Failed to open file:" << m_configPath;
         return;
     }
@@ -54,17 +54,17 @@ void ConfigManager::load()
     file.close();
 
     if (error.error != QJsonParseError::NoError) {
-        emit configLoadFailed("JSON parse error: " + error.errorString());
+        Q_EMIT configLoadFailed("JSON parse error: " + error.errorString());
         qWarning() << "ConfigManager: JSON error:" << error.errorString();
     }
 
     if (!doc.isObject()) {
-        emit configLoadFailed("Root JSON is not an object.");
+        Q_EMIT configLoadFailed("Root JSON is not an object.");
         qWarning() << "ConfigManager: Root is not an object.";
     }
 
     m_config = doc.object();
-    emit configReloaded();
+    Q_EMIT configReloaded();
     for (IConfigObserver *observer : m_observers) {
         observer->onConfigReloaded();
     }

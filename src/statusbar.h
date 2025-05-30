@@ -23,7 +23,7 @@ public:
 
     void onConfigReloaded() override;
 
-signals:
+Q_SIGNALS:
     void statusBarChanged();
 
 private:

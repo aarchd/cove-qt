@@ -24,7 +24,7 @@ public:
     void reload();
     void registerObserver(IConfigObserver *observer);
 
-signals:
+Q_SIGNALS:
     void configReloaded();
     void configLoadFailed(const QString &error);
 

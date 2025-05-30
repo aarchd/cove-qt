@@ -17,7 +17,7 @@ public:
     int percentage() const;
     int state() const;
 
-signals:
+Q_SIGNALS:
     void percentageChanged();
     void stateChanged();
 

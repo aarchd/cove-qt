@@ -1,4 +1,5 @@
 #include "battery.h"
+#include <QDebug>
 
 Battery::Battery(QObject *parent)
     : QObject(parent)
@@ -47,11 +48,12 @@ void Battery::onDeviceChanged(UpDevice *device, GParamSpec *, gpointer user_data
 
     if (!qFuzzyCompare(self->m_percentage + 1, newPercentage + 1)) {
         self->m_percentage = newPercentage;
-        emit self->percentageChanged();
+        Q_EMIT self->percentageChanged();
     }
+    
     if (self->m_state != (int)newState) {
         self->m_state = (int)newState;
-        emit self->stateChanged();
+        Q_EMIT self->stateChanged();
     }
 }
 

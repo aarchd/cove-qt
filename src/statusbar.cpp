@@ -16,7 +16,7 @@ StatusBar::StatusBar(QObject *parent)
 void StatusBar::onConfigReloaded()
 {
     loadConfig();
-    emit statusBarChanged();
+    Q_EMIT statusBarChanged();
 }
 
 void StatusBar::loadConfig()
