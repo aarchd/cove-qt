@@ -57,10 +57,10 @@ int main(int argc, char *argv[])
         LayerShellQt::Window::AnchorRight
     });
     statusBarLayer->setKeyboardInteractivity(LayerShellQt::Window::KeyboardInteractivityNone);
-    statusBarLayer->setExclusiveZone(statusBarView.height());
     statusBarLayer->setScope("cove-statusbar");
 
     StatusBar statusBar;
+    statusBarLayer->setExclusiveZone(statusBarView.screen()->size().height() * statusBar.heightPercent() / 100);
     statusBarView.rootContext()->setContextProperty("statusBar", &statusBar);
 
     statusBarView.setSource(QUrl("qrc:/qml/statusbar/Main.qml"));
